@@ -1,4 +1,4 @@
-package game;
+package java.game;
 
 import game.utils.KeyHandler;
 

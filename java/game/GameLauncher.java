@@ -1,4 +1,4 @@
-package game;
+package java.game;
 
 import javax.swing.*;
 import java.io.IOException;

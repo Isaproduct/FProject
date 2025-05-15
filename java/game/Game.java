@@ -1,7 +1,7 @@
-package game;
+package java.game;
 
 import game.entities.*;
-import game.entities.ghosts.Blinky;
+import java.game.entities.ghosts.Blinky;
 import game.entities.ghosts.Ghost;
 import game.ghostFactory.*;
 import game.ghostStates.EatenMode;

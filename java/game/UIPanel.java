@@ -1,4 +1,4 @@
-package game;
+package java.game;
 
 import game.entities.PacGum;
 import game.entities.SuperPacGum;
