@@ -1,6 +1,6 @@
 package java.game.entities;
 
-import game.GameplayPanel;
+import java.game.GameplayPanel;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;

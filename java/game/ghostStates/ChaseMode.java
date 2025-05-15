@@ -1,7 +1,7 @@
 package java.game.ghostStates;
 package game.ghostStates;
 
-import game.entities.ghosts.Ghost;
+import java.game.entities.ghosts.Ghost;
 
 
 public class ChaseMode extends GhostState{

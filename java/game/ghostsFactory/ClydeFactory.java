@@ -1,7 +1,7 @@
 package jave.game.ghostFactory;
 
-import game.entities.ghosts.Clyde;
-import game.entities.ghosts.Ghost;
+import java.game.entities.ghosts.Clyde;
+import java.game.entities.ghosts.Ghost;
 
 
 public class ClydeFactory extends AbstractGhostFactory {

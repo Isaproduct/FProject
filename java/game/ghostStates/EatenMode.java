@@ -1,7 +1,7 @@
 package java.game.ghostStates;
 
 
-import game.entities.ghosts.Ghost;
+import java.game.entities.ghosts.Ghost;
 import game.utils.Utils;
 import game.utils.WallCollisionDetector;
 

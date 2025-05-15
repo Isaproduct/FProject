@@ -1,6 +1,6 @@
 package  java.game.ghostsFactory;
 
-import game.entities.ghosts.*;
+import java.game.entities.ghosts.*;
 
 
 public abstract class AbstractGhostFactory {

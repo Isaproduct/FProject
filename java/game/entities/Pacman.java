@@ -1,12 +1,12 @@
 package java.game.entities;
 
-import game.Game;
-import game.Observer;
-import game.Sujet;
-import game.entities.ghosts.Ghost;
-import game.utils.CollisionDetector;
-import game.utils.KeyHandler;
-import game.utils.WallCollisionDetector;
+import java.game.Game;
+import java.game.Observer;
+import java.game.Sujet;
+import java.game.entities.ghosts.Ghost;
+import java.game.utils.CollisionDetector;
+import java.game.utils.KeyHandler;
+import java.game.utils.WallCollisionDetector;
 
 import java.util.ArrayList;
 import java.util.List;

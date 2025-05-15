@@ -1,7 +1,7 @@
 package java.game.ghostsFactory;
 
-import game.entities.ghosts.Ghost;
-import game.entities.ghosts.Pinky;
+import java.game.entities.ghosts.Ghost;
+import java.game.entities.ghosts.Pinky;
 
 
 public class PinkyFactory extends AbstractGhostFactory {

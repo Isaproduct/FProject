@@ -1,8 +1,8 @@
 package java.game.ghostStates;
 
 
-import game.entities.ghosts.Ghost;
-import game.utils.Utils;
+import java.game.entities.ghosts.Ghost;
+import java.game.utils.Utils;
 import jdk.jshell.execution.Util;
 
 
