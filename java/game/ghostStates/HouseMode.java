@@ -1,26 +1,24 @@
 package java.game.ghostStates;
+import java.game.entities.ghosts.Ghost;
+import java.game.utils.Utils;
+import java.game.utils.WallCollisionDetector;
 
 
-import game.entities.ghosts.Ghost;
-import game.utils.Utils;
-import game.utils.WallCollisionDetector;
-
-
-public class EatenMode extends GhostState{
-    public EatenMode(Ghost ghost) {
+public class HouseMode extends GhostState{
+    public HouseMode(Ghost ghost) {
         super(ghost);
     }
 
     @Override
-    public void insideHouse() {
-        ghost.switchHouseMode();
+    public void outsideHouse() {
+        this.ghost.switchChaseModeOrScatterMode();
     }
 
     @Override
     public int[] getTargetPosition(){
         int[] position = new int[2];
         position[0] = 208;
-        position[1] = 200;
+        position[1] = 168;
         return position;
     }
 

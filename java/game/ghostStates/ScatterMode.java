@@ -1,11 +1,9 @@
 package java.game.ghostStates;
-package game.ghostStates;
-
-import game.entities.ghosts.Ghost;
+import java.game.entities.ghosts.Ghost;
 
 
-public class ChaseMode extends GhostState{
-    public ChaseMode(Ghost ghost) {
+public class ScatterMode extends GhostState{
+    public ScatterMode(Ghost ghost) {
         super(ghost);
     }
 
@@ -16,11 +14,11 @@ public class ChaseMode extends GhostState{
 
     @Override
     public void timerModeOver() {
-        ghost.switchScatterMode();
+        ghost.switchChaseMode();
     }
 
     @Override
     public int[] getTargetPosition() {
-        return ghost.getStrategy().getChaseTargetPosition();
+        return ghost.getStrategy().getScatterTargetPosition();
     }
 }

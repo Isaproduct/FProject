@@ -1,30 +1,27 @@
 package java.game.ghostStates;
 
+import java.game.entities.ghosts.Ghost;
+import java.game.utils.Utils;
+import java.game.utils.WallCollisionDetector;
 
-import game.entities.ghosts.Ghost;
-import game.utils.Utils;
-import game.utils.WallCollisionDetector;
+public abstract class GhostState {
+    protected Ghost ghost;
 
-
-public class EatenMode extends GhostState{
-    public EatenMode(Ghost ghost) {
-        super(ghost);
+    public GhostState(Ghost ghost) {
+        this.ghost = ghost;
     }
 
-    @Override
-    public void insideHouse() {
-        ghost.switchHouseMode();
-    }
+    public void superPacGumEaten() {}
+    public void timerModeOver() {}
+    public void timerFrightenedModeOver() {}
+    public void eaten() {}
+    public void outsideHouse() {}
+    public void insideHouse() {}
 
-    @Override
     public int[] getTargetPosition(){
-        int[] position = new int[2];
-        position[0] = 208;
-        position[1] = 200;
-        return position;
+        return new int[2];
     }
 
-    @Override
     public void computeNextDir() {
         int new_xSpd = 0;
         int new_ySpd = 0;
@@ -34,15 +31,17 @@ public class EatenMode extends GhostState{
 
         double minDist = Double.MAX_VALUE;
 
-        if (ghost.getxSpd() <= 0 && !WallCollisionDetector.checkWallCollision(ghost, -ghost.getSpd(), 0, true)) {
+        if (ghost.getxSpd() <= 0 && !WallCollisionDetector.checkWallCollision(ghost, -ghost.getSpd(), 0)) {
             double distance = Utils.getDistance(ghost.getxPos() - ghost.getSpd(), ghost.getyPos(), getTargetPosition()[0], getTargetPosition()[1]);
+
             if (distance < minDist) {
                 new_xSpd = -ghost.getSpd();
                 new_ySpd = 0;
                 minDist = distance;
             }
         }
-        if (ghost.getxSpd() >= 0 && !WallCollisionDetector.checkWallCollision(ghost, ghost.getSpd(), 0, true)) {
+
+        if (ghost.getxSpd() >= 0 && !WallCollisionDetector.checkWallCollision(ghost, ghost.getSpd(), 0)) {
             double distance = Utils.getDistance(ghost.getxPos() + ghost.getSpd(), ghost.getyPos(),  getTargetPosition()[0], getTargetPosition()[1]);
             if (distance < minDist) {
                 new_xSpd = ghost.getSpd();
@@ -50,7 +49,8 @@ public class EatenMode extends GhostState{
                 minDist = distance;
             }
         }
-        if (ghost.getySpd() <= 0 && !WallCollisionDetector.checkWallCollision(ghost, 0, -ghost.getSpd(), true)) {
+
+        if (ghost.getySpd() <= 0 && !WallCollisionDetector.checkWallCollision(ghost, 0, -ghost.getSpd())) {
             double distance = Utils.getDistance(ghost.getxPos(), ghost.getyPos() - ghost.getSpd(), getTargetPosition()[0], getTargetPosition()[1]);
             if (distance < minDist) {
                 new_xSpd = 0;
@@ -58,7 +58,8 @@ public class EatenMode extends GhostState{
                 minDist = distance;
             }
         }
-        if (ghost.getySpd() >= 0 && !WallCollisionDetector.checkWallCollision(ghost, 0, ghost.getSpd(), true)) {
+
+        if (ghost.getySpd() >= 0 && !WallCollisionDetector.checkWallCollision(ghost, 0, ghost.getSpd())) {
             double distance = Utils.getDistance(ghost.getxPos(), ghost.getyPos() + ghost.getSpd(), getTargetPosition()[0], getTargetPosition()[1]);
             if (distance < minDist) {
                 new_xSpd = 0;
@@ -69,11 +70,11 @@ public class EatenMode extends GhostState{
 
         if (new_xSpd == 0 && new_ySpd == 0) return;
 
-        if (java.lang.Math.abs(new_xSpd) != java.lang.Math.abs(new_ySpd)) {
+        if (Math.abs(new_xSpd) != Math.abs(new_ySpd)) {
             ghost.setxSpd(new_xSpd);
             ghost.setySpd(new_ySpd);
         } else {
-            if (ghost.getxSpd() != 0) {
+            if (new_xSpd != 0) {
                 ghost.setxSpd(0);
                 ghost.setxSpd(new_ySpd);
             }else{
