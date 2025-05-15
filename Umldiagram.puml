@@ -1,0 +1,127 @@
+@startuml
+skinparam classAttributeIconSize 0
+title Full UML Diagram - Game Project with Methods and Relationships
+class Game {
+}
+class GameLauncher {
+}
+class GameplayPanel {
+}
+class Observer {
+}
+class Sujet {
+}
+class UIPanel {
+}
+class Entity {
+}
+class GhostHouse {
+}
+class MovingEntity {
+}
+class PacGum {
+}
+class Pacman {
+}
+class StaticEntity {
+}
+class SuperPacGum {
+}
+class Wall {
+}
+class Blinky {
+}
+class Clyde {
+}
+class Ghost {
+}
+class Inky {
+}
+class Pinky {
+}
+class AbstractGhostFactory {
+}
+class BlinkyFactory {
+}
+class ClydeFactory {
+}
+class InkyFactory {
+}
+class PinkyFactory {
+}
+class ChaseMode {
+}
+class EatenMode {
+}
+class FrightenedMode {
+}
+class GhostState {
+}
+class HouseMode {
+}
+class ScatterMode {
+}
+class BlinkyStrategy {
+}
+class ClydeStrategy {
+}
+class IGhostStrategy {
+}
+class InkyStrategy {
+}
+class PinkyStrategy {
+}
+class CollisionDetector {
+}
+class CsvReader {
+}
+class Key {
+}
+class Utils {
+}
+class WallCollisionDetector {
+}
+Observer <|.. Game
+Game --> Blinky
+Game --> Pacman
+GameLauncher --> UIPanel
+JPanel <|-- GameplayPanel
+Runnable <|.. GameplayPanel
+GameplayPanel --> Game
+JPanel <|-- UIPanel
+Observer <|.. UIPanel
+Wall <|-- GhostHouse
+Entity <|-- MovingEntity
+StaticEntity <|-- PacGum
+MovingEntity <|-- Pacman
+Sujet <|.. Pacman
+Pacman --> CollisionDetector
+Entity <|-- StaticEntity
+StaticEntity <|-- SuperPacGum
+StaticEntity <|-- Wall
+Ghost <|-- Blinky
+Ghost <|-- Clyde
+MovingEntity <|-- Ghost
+Ghost --> IGhostStrategy
+Ghost --> GhostState
+Ghost <|-- Inky
+Ghost <|-- Pinky
+AbstractGhostFactory <|-- BlinkyFactory
+AbstractGhostFactory <|-- ClydeFactory
+AbstractGhostFactory <|-- InkyFactory
+AbstractGhostFactory <|-- PinkyFactory
+GhostState <|-- ChaseMode
+GhostState <|-- EatenMode
+GhostState <|-- FrightenedMode
+GhostState --> Ghost
+GhostState <|-- HouseMode
+GhostState <|-- ScatterMode
+IGhostStrategy <|.. BlinkyStrategy
+IGhostStrategy <|.. ClydeStrategy
+ClydeStrategy --> Ghost
+IGhostStrategy <|.. InkyStrategy
+InkyStrategy --> Ghost
+IGhostStrategy <|.. PinkyStrategy
+CollisionDetector --> Game
+KeyListener <|.. Key
+@enduml
