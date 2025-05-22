@@ -1,0 +1,14 @@
+@startuml StartupSequence
+actor Player as "Игрок"
+participant "GameLauncher" as GL
+participant "LevelManager" as LM
+participant "CsvReader" as CR
+participant "GameEngine" as GE
+
+Player -> GL: startGame()
+GL -> LM: initLevel("level.csv")
+LM -> CR: readCSV()
+CR --> LM: levelData
+LM -> GE: initialize(levelData)
+GE --> GL: gameReady()
+@enduml

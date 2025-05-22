@@ -1,4 +1,4 @@
-@startuml FullClassDiagram
+    @startuml FullClassDiagram
 package game {
     class GameLauncher {
         +startGame(): void

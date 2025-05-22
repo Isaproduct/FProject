@@ -1,0 +1,19 @@
+@startuml MainLoopSequence
+participant "InputHandler" as IH
+participant "GameEngine" as GE
+participant "PacMan" as P
+participant "Ghost" as G
+participant "CollisionDetector" as CD
+participant "Renderer" as R
+
+loop Каждый кадр
+    IH -> GE: handleInput()
+    GE -> P: updatePosition(direction)
+    GE -> G: updateAllGhosts()
+    P -> CD: detectCollisions(P.position)
+    CD --> GE: collisionInfo
+    alt Нет столкновений
+        GE -> R: renderFrame()
+    end
+end
+@enduml

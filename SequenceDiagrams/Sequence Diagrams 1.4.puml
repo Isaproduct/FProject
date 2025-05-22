@@ -1,0 +1,73 @@
+@startuml GhostCollisionSequence
+participant "GameEngine" as GE
+participant "ScoreManager" as SM
+participant "UIPanel" as UI
+participant "GameOverHandler" as GO
+participant "Renderer" as R
+
+GE -> SM: reduceLife()
+SM --> UI: updateLives
+UI -> R: renderLives(lives)
+alt Жизни == 0
+    GE -> GO: triggerGameOver()
+    GO -> UI: showGameOver()
+else
+    GE -> GE: respawnEntities()
+    GE -> R: renderFrame()
+end
+@enduml
+```plantuml
+@startuml FullSequenceDiagram
+actor Player as "Игрок"
+participant "GameLauncher" as GL
+participant "LevelManager" as LM
+participant "CsvReader" as CR
+participant "GameEngine" as GE
+participant "InputHandler" as IH
+participant "PacMan" as P
+participant "Ghost" as G
+participant "CollisionDetector" as CD
+participant "ScoreManager" as SM
+participant "UIPanel" as UI
+participant "GameOverHandler" as GO
+participant "Renderer" as R
+
+== Запуск игры ==
+Player -> GL: startGame()
+GL -> LM: initLevel("level.csv")
+LM -> CR: readCSV()
+CR --> LM: levelData
+LM -> GE: initialize(levelData)
+GE -> SM: resetScore()
+GE -> IH: bindListeners()
+GE -> R: prepareCanvas()
+GE --> GL: gameReady()
+
+== Основной цикл ==
+loop Каждый кадр
+    IH -> GE: handleInput()
+    GE -> P: updatePosition(direction)
+    GE -> G: updateAllGhosts()
+    P -> CD: detectCollisions(P.position)
+    CD --> GE: collisionInfo
+    alt Пеллета съедена
+        GE -> SM: addPoints(10)
+        SM --> UI: newScore
+        UI -> R: renderScore(newScore)
+    end
+    alt Столкновение с привидом
+        GE -> SM: reduceLife()
+        SM --> UI: updateLives
+        UI -> R: renderLives(lives)
+        alt Жизни == 0
+            GE -> GO: triggerGameOver()
+            GO -> UI: showGameOver()
+            break
+        else
+            GE -> GE: respawnEntities()
+        end
+    end
+    GE -> R: renderFrame()
+end
+
+@enduml

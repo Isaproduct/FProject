@@ -1,0 +1,10 @@
+@startuml PelletEatenSequence
+participant "GameEngine" as GE
+participant "ScoreManager" as SM
+participant "UIPanel" as UI
+participant "Renderer" as R
+
+GE -> SM: addPoints(10)
+SM --> UI: newScore
+UI -> R: renderScore(newScore)
+@enduml
