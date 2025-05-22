@@ -1,0 +1,98 @@
+@startuml FullClassDiagram
+package game {
+    class GameLauncher {
+        +startGame(): void
+    }
+    class LevelManager {
+        -levelData: List<List<Cell>>
+        +initLevel(path: String): void
+    }
+    class CsvReader {
+        +readCSV(path: String): LevelData
+    }
+    class GameEngine {
+        -scoreManager: ScoreManager
+        -inputHandler: InputHandler
+        -collisionDetector: CollisionDetector
+        -ghostFactory: GhostFactory
+        -stateManager: StateManager
+        +initialize(levelData: LevelData): void
+        +update(): void
+        +render(): void
+    }
+    class InputHandler {
+        +bindListeners(): void
+        +handleInput(): Direction
+    }
+    class CollisionDetector {
+        +detectCollisions(position: Position): CollisionInfo
+    }
+    class ScoreManager {
+        -score: int
+        -lives: int
+        +resetScore(): void
+        +addPoints(points: int): void
+        +reduceLife(): void
+    }
+}
+
+package entities {
+    class PacMan {
+        -position: Position
+        +updatePosition(direction: Direction): void
+    }
+    class Ghost {
+        -state: GhostState
+        -strategy: GhostStrategy
+        +updateState(): void
+        +move(): void
+    }
+}
+
+package ghostFactory {
+    interface GhostFactory {
+        +createGhosts(levelData: LevelData): List<Ghost>
+    }
+    class AbstractGhostFactory
+    class BlinkyFactory
+    class PinkyFactory
+    GhostFactory <|.. AbstractGhostFactory
+    AbstractGhostFactory <|-- BlinkyFactory
+    AbstractGhostFactory <|-- PinkyFactory
+}
+
+package ghostStates {
+    interface GhostState
+    class ScatterMode
+    class ChaseMode
+    class FrightenedMode
+    class EatenMode
+    class HouseMode
+    GhostState <|.. ScatterMode
+    GhostState <|.. ChaseMode
+    GhostState <|.. FrightenedMode
+    GhostState <|.. EatenMode
+    GhostState <|.. HouseMode
+}
+
+package ghostStrategies {
+    interface GhostStrategy
+    class BlinkyStrategy
+    class PinkyStrategy
+    GhostStrategy <|.. BlinkyStrategy
+    GhostStrategy <|.. PinkyStrategy
+}
+
+GameEngine --> LevelManager
+GameEngine --> CsvReader
+GameEngine --> ScoreManager
+GameEngine --> InputHandler
+GameEngine --> CollisionDetector
+GameEngine --> GhostFactory
+GameEngine --> stateManager
+PacMan --> Position
+Ghost --> Position
+Ghost --> GhostState
+Ghost --> GhostStrategy
+Position ..> Coordinate
+@enduml

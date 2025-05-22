@@ -1,0 +1,47 @@
+@startuml FullInfraDiagram
+left to right direction
+actor Player as "Игрок"
+
+rectangle "User Interface Layer" {
+    component InputHandler
+    component UIPanel
+    component Renderer
+}
+
+rectangle "Game Engine Layer" {
+    component GameEngine
+    component LevelManager
+    component CollisionDetector
+    component GhostFactory
+    component StateManager
+    component StrategyManager
+}
+
+rectangle "Data Layer" {
+    database LevelCSV as "level.csv"
+    folder Sprites as "img/sprites/"
+    file Settings as "config.json"
+    file HighScores as "scores.dat"
+}
+
+Player --> InputHandler: ввод (нажатия клавиш)
+InputHandler --> GameEngine: направление движения
+GameEngine --> LevelManager: запрос данных уровня
+LevelManager --> LevelCSV: чтение
+LevelCSV --> LevelManager: данные карты
+LevelManager --> GameEngine: levelData
+GameEngine --> GhostFactory: создать привидений
+GhostFactory --> GameEngine: список Ghost
+GameEngine --> StateManager: текущее состояние привидения
+StateManager --> StrategyManager: выбирать стратегию
+StrategyManager --> Ghost: алгоритм движения
+GameEngine --> CollisionDetector: позиции сущностей
+CollisionDetector --> GameEngine: информация о столкновениях
+GameEngine --> SM: события очков и жизней
+SM --> HighScores: запись при окончании игры
+GameEngine --> UIPanel: обновления UI (очки, жизни)
+UIPanel --> Renderer: отрисовка UI
+GameEngine --> Renderer: отрисовка игры
+GameEngine --> Settings: чтение/запись параметров
+Settings --> GameEngine: параметры (скорости, таймеры)
+@enduml
