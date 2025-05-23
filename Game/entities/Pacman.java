@@ -117,3 +117,4 @@ public class Pacman extends MovingEntity implements Sujet {
         }
     }
 }
+

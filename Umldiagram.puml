@@ -1,127 +1,375 @@
 @startuml
-skinparam classAttributeIconSize 0
-title Full UML Diagram - Game Project with Methods and Relationships
-class Game {
-}
-class GameLauncher {
-}
-class GameplayPanel {
-}
-class Observer {
-}
-class Sujet {
-}
-class UIPanel {
-}
+
 class Entity {
+  +update()
+  +draw(g: Graphics)
 }
-class GhostHouse {
+
+class StaticEntity extends Entity {
+  +draw(g: Graphics)
 }
-class MovingEntity {
+
+class Wall extends StaticEntity
+class PacGum extends StaticEntity
+class SuperPacGum extends StaticEntity
+
+class MovingEntity extends Entity {
+  +move()
+  +update()
+  +draw(g: Graphics)
 }
-class PacGum {
-}
-class Pacman {
-}
-class StaticEntity {
-}
-class SuperPacGum {
-}
-class Wall {
-}
-class Blinky {
-}
-class Clyde {
-}
-class Ghost {
-}
-class Inky {
-}
-class Pinky {
-}
-class AbstractGhostFactory {
-}
-class BlinkyFactory {
-}
-class ClydeFactory {
-}
-class InkyFactory {
-}
-class PinkyFactory {
-}
-class ChaseMode {
-}
-class EatenMode {
-}
-class FrightenedMode {
-}
+
 class GhostState {
+  <<interface>>
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
 }
-class HouseMode {
+
+class Ghost {
+  -state: GhostState
+  -strategy: IGhostStrategy
+  +setState(state: GhostState)
+  +update()
+  +draw(g: Graphics)
 }
-class ScatterMode {
+
+class ChaseMode implements GhostState {
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
 }
-class BlinkyStrategy {
+
+class FrightenedMode implements GhostState {
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
 }
-class ClydeStrategy {
+
+class EatenMode implements GhostState {
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
 }
+
+class ScatterMode implements GhostState {
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
+}
+
+class HouseMode implements GhostState {
+  +update(ghost: Ghost)
+  +draw(ghost: Ghost, g: Graphics)
+}
+
 class IGhostStrategy {
+  <<interface>>
+  +move(ghost: Ghost)
 }
-class InkyStrategy {
+
+class ClydeStrategy implements IGhostStrategy {
+  +move(ghost: Ghost)
 }
-class PinkyStrategy {
+
+class PinkyStrategy implements IGhostStrategy {
+  +move(ghost: Ghost)
 }
+
+class BlinkyStrategy implements IGhostStrategy {
+  +move(ghost: Ghost)
+}
+
+class InkyStrategy implements IGhostStrategy {
+  +move(ghost: Ghost)
+}
+
+class GhostFactory {
+  <<abstract>>
+  +createGhost(): Ghost
+}
+
+class BlinkyFactory extends GhostFactory {
+  +createGhost(): Ghost
+}
+
+class ClydeFactory extends GhostFactory {
+  +createGhost(): Ghost
+}
+
+class InkyFactory extends GhostFactory {
+  +createGhost(): Ghost
+}
+
+class PinkyFactory extends GhostFactory {
+  +createGhost(): Ghost
+}
+
+class Pacman extends MovingEntity {
+  -observers: List<Observer>
+  +registerObserver(o: Observer)
+  +removeObserver(o: Observer)
+  +notifyObservers()
+  +eatPacGum()
+  +update()
+  +draw(g: Graphics)
+}
+
+class Observer {
+  <<interface>>
+  +update()
+}
+
+class Subject {
+  <<interface>>
+  +registerObserver(o: Observer)
+  +removeObserver(o: Observer)
+  +notifyObservers()
+}
+
+class Game implements Runnable, Observer, Subject {
+  +run()
+  +update()
+  +draw(g: Graphics)
+  +registerObserver(o: Observer)
+  +removeObserver(o: Observer)
+  +notifyObservers()
+}
+
+class UIPanel extends JPanel implements Observer {
+  +update()
+  +paintComponent(g: Graphics)
+}
+
 class CollisionDetector {
+  +checkCollision(a: Entity, b: Entity): boolean
+  +checkWallCollision(e: Entity, w: Wall): boolean
 }
-class CsvReader {
+
+class WallCollisionDetector extends CollisionDetector
+
+class GameLauncher {
+  +main(args: String[])
 }
-class Key {
+
+class KeyListener {
+  <<interface>>
+  +keyPressed()
+  +keyReleased()
+  +keyTyped()
 }
-class Utils {
-}
-class WallCollisionDetector {
-}
-Observer <|.. Game
-Game --> Blinky
-Game --> Pacman
-GameLauncher --> UIPanel
-JPanel <|-- GameplayPanel
-Runnable <|.. GameplayPanel
-GameplayPanel --> Game
-JPanel <|-- UIPanel
-Observer <|.. UIPanel
-Wall <|-- GhostHouse
-Entity <|-- MovingEntity
-StaticEntity <|-- PacGum
-MovingEntity <|-- Pacman
-Sujet <|.. Pacman
-Pacman --> CollisionDetector
+
+class Key
+
 Entity <|-- StaticEntity
-StaticEntity <|-- SuperPacGum
+Entity <|-- MovingEntity
 StaticEntity <|-- Wall
-Ghost <|-- Blinky
-Ghost <|-- Clyde
+StaticEntity <|-- PacGum
+StaticEntity <|-- SuperPacGum
 MovingEntity <|-- Ghost
-Ghost --> IGhostStrategy
-Ghost --> GhostState
-Ghost <|-- Inky
-Ghost <|-- Pinky
-AbstractGhostFactory <|-- BlinkyFactory
-AbstractGhostFactory <|-- ClydeFactory
-AbstractGhostFactory <|-- InkyFactory
-AbstractGhostFactory <|-- PinkyFactory
-GhostState <|-- ChaseMode
-GhostState <|-- EatenMode
-GhostState <|-- FrightenedMode
-GhostState --> Ghost
-GhostState <|-- HouseMode
-GhostState <|-- ScatterMode
-IGhostStrategy <|.. BlinkyStrategy
+MovingEntity <|-- Pacman
+
+GhostState <|.. ChaseMode
+GhostState <|.. FrightenedMode
+GhostState <|.. EatenMode
+GhostState <|.. ScatterMode
+GhostState <|.. HouseMode
+
 IGhostStrategy <|.. ClydeStrategy
-ClydeStrategy --> Ghost
-IGhostStrategy <|.. InkyStrategy
-InkyStrategy --> Ghost
 IGhostStrategy <|.. PinkyStrategy
-CollisionDetector --> Game
-KeyListener <|.. Key
-@enduml
+IGhostStrategy <|.. BlinkyStrategy
+IGhostStrategy <|.. InkyStrategy
+
+GhostFactory <|-- BlinkyFactory
+GhostFactory <|-- ClydeFactory
+GhostFactory <|-- InkyFactory
+GhostFactory <|-- PinkyFactory
+
+Subject <|.. Pacman
+Observer <|.. Game
+Observer <|.. UIPanel
+Subject <|.. Game
+
+@enduml@startuml
+
+       class Entity {
+         +update()
+         +draw(g: Graphics)
+       }
+
+       class StaticEntity extends Entity {
+         +draw(g: Graphics)
+       }
+
+       class Wall extends StaticEntity
+       class PacGum extends StaticEntity
+       class SuperPacGum extends StaticEntity
+
+       class MovingEntity extends Entity {
+         +move()
+         +update()
+         +draw(g: Graphics)
+       }
+
+       class GhostState {
+         <<interface>>
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class Ghost {
+         -state: GhostState
+         -strategy: IGhostStrategy
+         +setState(state: GhostState)
+         +update()
+         +draw(g: Graphics)
+       }
+
+       class ChaseMode implements GhostState {
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class FrightenedMode implements GhostState {
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class EatenMode implements GhostState {
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class ScatterMode implements GhostState {
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class HouseMode implements GhostState {
+         +update(ghost: Ghost)
+         +draw(ghost: Ghost, g: Graphics)
+       }
+
+       class IGhostStrategy {
+         <<interface>>
+         +move(ghost: Ghost)
+       }
+
+       class ClydeStrategy implements IGhostStrategy {
+         +move(ghost: Ghost)
+       }
+
+       class PinkyStrategy implements IGhostStrategy {
+         +move(ghost: Ghost)
+       }
+
+       class BlinkyStrategy implements IGhostStrategy {
+         +move(ghost: Ghost)
+       }
+
+       class InkyStrategy implements IGhostStrategy {
+         +move(ghost: Ghost)
+       }
+
+       class GhostFactory {
+         <<abstract>>
+         +createGhost(): Ghost
+       }
+
+       class BlinkyFactory extends GhostFactory {
+         +createGhost(): Ghost
+       }
+
+       class ClydeFactory extends GhostFactory {
+         +createGhost(): Ghost
+       }
+
+       class InkyFactory extends GhostFactory {
+         +createGhost(): Ghost
+       }
+
+       class PinkyFactory extends GhostFactory {
+         +createGhost(): Ghost
+       }
+
+       class Pacman extends MovingEntity {
+         -observers: List<Observer>
+         +registerObserver(o: Observer)
+         +removeObserver(o: Observer)
+         +notifyObservers()
+         +eatPacGum()
+         +update()
+         +draw(g: Graphics)
+       }
+
+       class Observer {
+         <<interface>>
+         +update()
+       }
+
+       class Subject {
+         <<interface>>
+         +registerObserver(o: Observer)
+         +removeObserver(o: Observer)
+         +notifyObservers()
+       }
+
+       class Game implements Runnable, Observer, Subject {
+         +run()
+         +update()
+         +draw(g: Graphics)
+         +registerObserver(o: Observer)
+         +removeObserver(o: Observer)
+         +notifyObservers()
+       }
+
+       class UIPanel extends JPanel implements Observer {
+         +update()
+         +paintComponent(g: Graphics)
+       }
+
+       class CollisionDetector {
+         +checkCollision(a: Entity, b: Entity): boolean
+         +checkWallCollision(e: Entity, w: Wall): boolean
+       }
+
+       class WallCollisionDetector extends CollisionDetector
+
+       class GameLauncher {
+         +main(args: String[])
+       }
+
+       class KeyListener {
+         <<interface>>
+         +keyPressed()
+         +keyReleased()
+         +keyTyped()
+       }
+
+       class Key
+
+       Entity <|-- StaticEntity
+       Entity <|-- MovingEntity
+       StaticEntity <|-- Wall
+       StaticEntity <|-- PacGum
+       StaticEntity <|-- SuperPacGum
+       MovingEntity <|-- Ghost
+       MovingEntity <|-- Pacman
+
+       GhostState <|.. ChaseMode
+       GhostState <|.. FrightenedMode
+       GhostState <|.. EatenMode
+       GhostState <|.. ScatterMode
+       GhostState <|.. HouseMode
+
+       IGhostStrategy <|.. ClydeStrategy
+       IGhostStrategy <|.. PinkyStrategy
+       IGhostStrategy <|.. BlinkyStrategy
+       IGhostStrategy <|.. InkyStrategy
+
+       GhostFactory <|-- BlinkyFactory
+       GhostFactory <|-- ClydeFactory
+       GhostFactory <|-- InkyFactory
+       GhostFactory <|-- PinkyFactory
+
+       Subject <|.. Pacman
+       Observer <|.. Game
+       Observer <|.. UIPanel
+       Subject <|.. Game
+
+       @enduml
